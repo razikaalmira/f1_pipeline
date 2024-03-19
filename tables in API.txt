@@ -1,0 +1,20 @@
+ergast ==========
+done RACE RESULT: Pos	No	Driver	Constructor	Laps	Grid	Time	Status	Points
+no need, bisa dibikin dari race result DRIVER STANDINGS: Pos	Driver	Constructor	Points	Wins
+ditto driver standings CONSTRUCTOR STANDINGS: Pos	Constructor	Nationality	Points	Wins
+no need, udah ada di race result DRIVER INFORMATION: Driver Name	Permanent Number	Nationality	DOB	Information
+ditto driver info CONSTRUCTOR INFORMATION: Constructor Name	Nationality	Information
+
+
+LAP TIMES: DriverId	Position	Time
+PIT STOPS: DriverId	Stop	Lap	Time	Duration
+
+openf1 ==========
+gajadi, too much rows CAR DATA: driver_number	rpm	speed	n_gear	throttle	brake	drs	date	session_key	meeting_key
+gajadi karena not too important PIT: pit_duration	lap_number	driver_number	date	session_key	meeting_key
+done MEETING: meeting_name	meeting_official_name	location	country_key	country_code	country_name	circuit_key	circuit_short_name	date_start	gmt_offset	meeting_key	year
+done SESSION: location	country_key	country_code	country_name	circuit_key	circuit_short_name	session_type	session_name	date_start	date_end	gmt_offset	session_key	meeting_key	year
+ga jadi, not too important RACE CONTROL: date	lap_number	category	flag	scope	driver_number	message	session_key	meeting_key	sector
+done WEATHER: air_temperature	humidity	pressure	rainfall	track_temperature	wind_direction	wind_speed	date	session_key	meeting_key
+gajadi STINTS: meeting_key	session_key	stint_number	driver_number	lap_start	lap_end	compound	tyre_age_at_start
+done LAPS: 	meeting_key	session_key	driver_number	i1_speed	i2_speed	st_speed	date_start	lap_duration	is_pit_out_lap	duration_sector_1	duration_sector_2	duration_sector_3	segments_sector_1	segments_sector_2	segments_sector_3	lap_number
