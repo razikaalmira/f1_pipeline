@@ -2,9 +2,7 @@ import os
 import json
 import requests
 import pandas as pd
-import numpy as np
 from datetime import date,datetime
-import psycopg2
 from io import StringIO
 import boto3
 
@@ -16,8 +14,8 @@ resolved_parent_directory = os.path.abspath(parent_directory)
 
 # Initialize S3 Bucket
 my_bucket = 'formula1-project-bucket' # already created on S3
+s3_client = boto3.client('s3')
 csv_buffer = StringIO()
-s3_resource = boto3.resource('s3')
 
 
 class DataRetriever:
@@ -40,6 +38,19 @@ class DataRetriever:
         except requests.exceptions.RequestException as f:
             return f"Error: {f}"
 
+    def _upload_to_s3(self,dataframe,filename):
+        try:
+            with StringIO() as csv_buffer:
+                dataframe.to_csv(csv_buffer,index=False)
+                response = s3_client.put_object(Body=csv_buffer.getvalue(),Bucket=my_bucket,Key=f'{filename}')
+                status = response.get("ResponseMetadata",{}).get("HTTPStatusCode")
+                if status == 200:
+                    status_text = f"Successful S3 put_object {dataframe} response. Status - {status}."
+                else:
+                    status_text = f"Unsuccessful S3 put_object {dataframe} response. Status - {status}."      
+            return status_text
+        except Exception as e:
+            return f"Error: {e}"
     
 class Ergast(DataRetriever):
 
@@ -55,25 +66,29 @@ class Ergast(DataRetriever):
             fetched = self._fetch_data(url)
             df = pd.DataFrame(fetched['MRData']['RaceTable']['Races'])
             season_list.append(df)
-        
-        combined_season_df = pd.concat(season_list, ignore_index=True)
-        combined_season_df['date'] = pd.to_datetime(combined_season_df['date']).dt.date
-        combined_season_df['season'] = combined_season_df['season'].astype('int')
-        combined_season_df['round'] = combined_season_df['round'].astype('int')
-        
-        if self.max_round_todate is None:
-            filtered_date = combined_season_df[(combined_season_df['season'] == self.current_year) & (combined_season_df['date'] < self.today)]
             
-            if not filtered_date.empty:
-                max_round = filtered_date.loc[filtered_date['date'].idxmax(), 'round']
-                self.max_round_todate = max_round.astype('int')
-            else:
-                print("Filtered data is empty. No max round found.")
+        if season_list:
+            season_list_df = pd.concat(season_list, ignore_index=True)
+            season_list_df['date'] = pd.to_datetime(season_list_df['date']).dt.date
+            season_list_df['season'] = season_list_df['season'].astype('int')
+            season_list_df['round'] = season_list_df['round'].astype('int')
+            
+            if self.max_round_todate is None:
+                filtered_date = season_list_df[(season_list_df['season'] == self.current_year) & (season_list_df['date'] < self.today)]
+                
+                if not filtered_date.empty:
+                    max_round = filtered_date.loc[filtered_date['date'].idxmax(), 'round']
+                    self.max_round_todate = max_round.astype('int')
+                else:
+                    print("Filtered data is empty. No max round found.")
     
-        # upload to S3 bucket
-        combined_season_df.to_csv(csv_buffer,index=False)
-        s3_resource.Object(my_bucket, 'season_list.csv').put(Body=csv_buffer.getvalue())
-        return combined_season_df
+            
+            # upload to S3 bucket
+            result = self._upload_to_s3(season_list_df,'season_list.csv')
+    
+            return result
+        else:
+            return "No season_list data fetched for any year."
         
     def get_race_result(self):
         race_result = []
@@ -101,12 +116,15 @@ class Ergast(DataRetriever):
                             df['season'] = year
                             df['round'] = race_no
                             race_result.append(df)
-        
-        combined_race_result = pd.concat(race_result,ignore_index=True)
-        # upload to S3 bucket
-        combined_race_result.to_csv(csv_buffer,index=False)
-        s3_resource.Object(my_bucket, 'race_result.csv').put(Body=csv_buffer.getvalue())
-        return combined_race_result
+                            
+        if race_result:
+            race_result_df = pd.concat(race_result,ignore_index=True)
+    
+            # upload to S3 bucket
+            result = self._upload_to_s3(race_result_df,'race_result.csv')
+            return result
+        else:
+            return "No race_result data fetched for any year."
 
 
 class OpenF1(DataRetriever):
@@ -120,10 +138,12 @@ class OpenF1(DataRetriever):
         url = f"{self.base_url}/meetings?year>={self.start_year}&year<={self.end_year}"
         fetched = self._fetch_data(url)
         meeting_info = pd.DataFrame(fetched)
-        # upload to S3 bucket
-        meeting_info.to_csv(csv_buffer,index=False)
-        s3_resource.Object(my_bucket, 'meeting_info.csv').put(Body=csv_buffer.getvalue())
-        return meeting_info
+        if not meeting_info.empty:
+            # upload to S3 bucket
+            result = self._upload_to_s3(meeting_info,'meeting_info.csv')
+            return result
+        else:
+            return "No meeting_info data fetched for any year."
     
     
     def get_session_info(self):
@@ -133,10 +153,12 @@ class OpenF1(DataRetriever):
         if self.session_key is None and not session_info.empty:
             self.session_key = list(set(session_info['session_key']))
             
-        # upload to S3 bucket
-        session_info.to_csv(csv_buffer,index=False)
-        s3_resource.Object(my_bucket, 'session_info.csv').put(Body=csv_buffer.getvalue())
-        return session_info
+        if not session_info.empty:
+            # upload to S3 bucket
+            result = self._upload_to_s3(session_info,'session_info.csv')
+            return result
+        else:
+            return "No session_info data fetched for any year."
     
     
     def get_weather_info(self):
@@ -148,10 +170,12 @@ class OpenF1(DataRetriever):
                 fetched = self._fetch_data(url)
                 weather_info = weather_info._append(fetched,ignore_index=True)
                 
-            # upload to S3 bucket
-            weather_info.to_csv(csv_buffer,index=False)
-            s3_resource.Object(my_bucket, 'weather_info.csv').put(Body=csv_buffer.getvalue())
-            return weather_info
+            if not weather_info.empty:
+                # upload to S3 bucket
+                result = self._upload_to_s3(weather_info,'weather_info.csv')
+                return result
+            else:
+                return "No weather_info data fetched for any year."
         except TypeError as e:
             return f"Error: {e}, session info is empty, couldn't get weather info."
         except Exception as f:
@@ -167,10 +191,12 @@ class OpenF1(DataRetriever):
                 fetched = self._fetch_data(url)
                 laps_data = laps_data._append(fetched,ignore_index=True)
 
-            # upload to S3 bucket
-            laps_data.to_csv(csv_buffer,index=False)
-            s3_resource.Object(my_bucket, 'laps_data.csv').put(Body=csv_buffer.getvalue())
-            return laps_data
+            if not laps_data.empty:
+                # upload to S3 bucket
+                result = self._upload_to_s3(laps_data,'laps_data.csv')
+                return result
+            else:
+                return "No laps_data data fetched for any year."
         except TypeError as e:
             return f"Error: {e}, session info is empty, couldn't get laps data."
         except Exception as f:
