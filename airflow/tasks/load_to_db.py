@@ -1,16 +1,19 @@
 import psycopg2
 from config import config
 
-def connect():
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-        conn.set_session(autocommit=True)
+# def connect():
+#     try:
+#         conn = None
 
-        # create a cursor
-        cur = conn.cursor()
-        
+params = config()
+# create connection
+conn = psycopg2.connect(**params)
+# create cursor
+cur = conn.cursor()
+
+
+
+
         
 cur.close()
 conn.close()
