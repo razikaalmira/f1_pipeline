@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: dev
+    database: f1_db
+    schema: dev
+    tables:
+      - name: laps_data_temp
+      - name: meeting_info_temp
+      - name: race_result_temp
+      - name: season_list_temp
+      - name: session_info_temp
+      - name: weather_info_temp
+      - name: dim_driver_temp

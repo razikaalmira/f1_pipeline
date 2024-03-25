@@ -1,0 +1,122 @@
+
+version: 2
+
+models:
+  - name: dim_constructor
+    description: " dimension table for F1 constructors."
+    columns:
+      - name: constructor_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_driver
+    description: "A dimension table for F1 drivers."
+    columns:
+      - name: driver_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_meeting
+    description: " dimension table for meeting including date of the race, practice, qualifying and circuit details."
+    columns:
+      - name: meeting_key
+        description: "The primary key for this table"
+        tests:
+          - unique
+      - name: season
+        description: "Secondary key if combined with round column"
+      - name: round
+        description: "Secondary key if combined with season column"
+
+  - name: dim_session
+    description: " dimension table for sessions."
+    columns:
+      - name: session_key
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+  
+  - name: fastest_lap
+    description: "Fastest lap per driver per round."
+    columns:
+      - name: average_speed
+        description: "Average speed in kilometer per hour"
+        tests:
+          - non_negative
+      - name: driver_id
+        tests:
+          - relationships:
+              to: ref('dim_driver')
+              field: driver_id
+      - name: season
+        tests:
+          - not_null
+      - name: round
+        tests:
+          - not_null
+  
+  - name: laps_data
+    description: "Fact table of lap details per driver."
+    columns:
+      - name: meeting_key
+        tests:
+          - relationships:
+              to: ref('dim_meeting')
+              field: meeting_key
+      - name: driver_id
+        tests:
+          - relationships:
+              to: ref('dim_driver')
+              field: driver_id
+      - name: st_speed
+        tests:
+          - non_negative
+      - name: lap_duration
+        tests:
+          - non_negative
+      - name: lap_number
+        tests:
+          - non_negative
+          - not_null
+    
+  - name: race_result
+    description: "Fact table of race result per round."
+    columns:
+      - name: driver_id
+        tests:
+          - relationships:
+              to: ref('dim_driver')
+              field: driver_id
+      - name: constructor_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_constructor')
+              field: constructor_id
+      - name: absolute_millisecond
+        tests:
+          - non_negative
+      - name: season
+        tests:
+          - not_null
+      - name: round
+        tests:
+          - not_null
+      - name: position
+        tests:
+          - accepted_values:
+              values: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+  - name: weather_data
+    description: "Fact table of weather details on each race."
+    columns:
+      - name: wind_speed
+        tests:
+          - non_negative
+      - name: wind_direction
+        tests:
+          - non_negative
