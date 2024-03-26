@@ -10,6 +10,7 @@ select distinct
     birthdate,
     nationality
 from {{ ref('snapshot_dim_driver') }}
+where dbt_valid_to is null
 
 -- with
 -- to_json as (

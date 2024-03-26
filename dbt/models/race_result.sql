@@ -1,4 +1,5 @@
 {{ config(materialized='table') }}
+
 select
     position,
     positiontext,
