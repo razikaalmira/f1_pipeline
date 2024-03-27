@@ -1,0 +1,11 @@
+.ipynb_checkpoints
+__pycache__/
+*.ini
+airflow/tasks/__pycache__/
+airflow/tasks/.ipynb_checkpoints/
+airflow/tasks/database.ini
+airflow/tasks/database.ini
+streamlit/.streamlit/secrets.toml
+*/.ipynb_checkpoints/*.ipynb
+*/__pycache__/
+*/myenv/
