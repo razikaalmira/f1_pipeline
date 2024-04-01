@@ -22,6 +22,7 @@ def get_driver_standings(_conn) -> pd.DataFrame:
             full_name,
             driver_number,
             constructor_name,
+            nationality,
             total_points,
             rank
         FROM driver_standings;''',_conn)
@@ -49,7 +50,8 @@ def get_latest_race(_conn) -> pd.DataFrame:
             circuit_name,
             latitude,
             longitude,
-            race_date
+            race_date,
+            concat('Round ',round,': ',racename) racename_text
         FROM latest_race;''',_conn)
     return latest_race
 
@@ -120,8 +122,8 @@ def get_meetings(_conn) -> pd.DataFrame:
             circuit_name,
             country,
             locality,
-            latitude,
-            longitude,
+            latitude::decimal,
+            longitude::decimal,
             race_date
         FROM meetings_this_season;''',_conn)
     return meetings
