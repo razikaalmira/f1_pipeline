@@ -1,0 +1,8 @@
+# These packages are used ONLY for the Streamlit app
+
+streamlit==1.32.2
+pandas==2.2.1
+psycopg2==2.9.9
+sqlalchemy==2.0.29
+plotly==5.20.0
+
