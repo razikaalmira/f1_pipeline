@@ -1,4 +1,3 @@
-import psycopg2
 import pandas as pd
 import boto3
 from io import StringIO
@@ -9,7 +8,7 @@ from sqlalchemy import create_engine
 
 
 my_bucket = 'formula1-project-bucket'
-s3_resource = boto3.resource('s3')
+s3_resource = boto3.resource('s3')  
 params = config()
 
 
@@ -22,13 +21,11 @@ def get_objects_from_s3():
         object_list.append(o.key)
 
     # Import all the csv in the bucket as dataframe
-    # df_list = []
     for file_name in object_list:
         obj = s3_resource.Object(bucket_name=my_bucket, key=file_name)
         response = obj.get()
         data = response['Body'].read().decode('utf-8')
         globals()[file_name.split('.')[0]] = pd.read_csv(StringIO(data),on_bad_lines='skip')
-        # df_list.append(file_name.split('.')[0])
 
 
 def replace_single_to_double_quotes(dataframe,cols_to_replace):
@@ -36,40 +33,10 @@ def replace_single_to_double_quotes(dataframe,cols_to_replace):
         dataframe[column] = dataframe[column].apply(lambda x: str(x).replace("'",'"'))
 
 
-# race_result_df = race_result.copy()
-
-# race_result_df['Driver'] = race_result_df['Driver'].apply(lambda x: x.replace("'",'"'))
-# race_result_df['Constructor'] = race_result_df['Constructor'].apply(lambda x: x.replace("'",'"'))
-# race_result_df['Time'] = race_result_df['Time'].apply(lambda x: str(x).replace("'",'"'))
-# race_result_df['FastestLap'] = race_result_df['FastestLap'].apply(lambda x: str(x).replace("'",'"'))
-
-
-# Fixed invalid values in column 'Time'
-
-# Fixed non-readable json values
-
-
-# nonjson_columns = ['Circuit', 'FirstPractice', 'SecondPractice', 'ThirdPractice', 'Qualifying', 'Sprint']
-
-
-# season_list['Circuit'] = season_list['Circuit'].apply(lambda x: str(x).replace("'",'"'))
-# season_list['FirstPractice'] = season_list['FirstPractice'].apply(lambda x: str(x).replace("'",'"'))
-# season_list['SecondPractice'] = season_list['SecondPractice'].apply(lambda x: str(x).replace("'",'"'))
-# season_list['ThirdPractice'] = season_list['ThirdPractice'].apply(lambda x: str(x).replace("'",'"'))
-# season_list['Qualifying'] = season_list['Qualifying'].apply(lambda x: str(x).replace("'",'"'))
-# season_list['Sprint'] = season_list['Sprint'].apply(lambda x: str(x).replace("'",'"'))
-
-
 # Lower all column names
 def lowercase_columns(dataframe_list):
     for dataframe in dataframe_list:
         dataframe.columns = [x.lower() for x in dataframe.columns]
-
-
-
-# dfs = [race_result,laps_data,weather_info,season_list,session_info,meeting_info]
-# for df in dfs:
-#     lowercase_columns(df)
 
 
 # import configuration

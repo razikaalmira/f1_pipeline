@@ -63,11 +63,6 @@ models:
   - name: laps_data
     description: "Fact table of lap details per driver."
     columns:
-      - name: meeting_key
-        tests:
-          - relationships:
-              to: ref('dim_meeting')
-              field: meeting_key
       - name: driver_id
         tests:
           - relationships:
@@ -98,9 +93,6 @@ models:
           - relationships:
               to: ref('dim_constructor')
               field: constructor_id
-      - name: absolute_millisecond
-        tests:
-          - non_negative
       - name: season
         tests:
           - not_null

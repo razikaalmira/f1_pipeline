@@ -2,7 +2,7 @@
 
 {{
     config(
-      target_database='f1_db',
+      target_database='postgres',
       target_schema='snapshots',
       unique_key='driver_id',
       strategy='check',

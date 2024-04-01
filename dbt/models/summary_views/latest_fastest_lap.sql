@@ -15,4 +15,3 @@ select distinct
 	join {{ ref('dim_constructor') }}  c
 		on a.constructor_id = c.constructor_id
 	where season = extract(year from current_date)
-	and round = (select max(round) from {{ ref('fastest_lap') }} where season = extract(year from current_date))

@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: dev
-    database: f1_db
+    database: postgres
     schema: dev
     tables:
       - name: laps_data_temp

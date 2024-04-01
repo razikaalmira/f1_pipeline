@@ -15,6 +15,7 @@ select
 	concat(c.given_name,' ',c.family_name) full_name,
 	c.driver_number,
 	d.constructor_name,
+	c.nationality,
 	cast(a.total_points as int) as total_points,
 	dense_rank() over (partition by a.season order by a.total_points desc) as rank
 from rnk a
