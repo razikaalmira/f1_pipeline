@@ -44,7 +44,7 @@ dbt_run = BashOperator(
 
 dbt_test = BashOperator(
     task_id="dbt_test",
-    bash_command=f"cd {task_directory}/dbt && dbt run --profiles-dir .",
+    bash_command=f"cd {task_directory}/dbt && dbt test --profiles-dir .",
     dag=dag
 )
 
