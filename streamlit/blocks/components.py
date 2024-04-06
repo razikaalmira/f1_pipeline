@@ -66,7 +66,8 @@ def get_latest_race_result(_conn) -> pd.DataFrame:
             positiontext,
             grid,
             points,
-            relative_time
+            relative_time,
+            cast(absolute_millisecond as int)/1000 absolute_second
         FROM latest_race_result;''',_conn)
     return latest_race_result
 

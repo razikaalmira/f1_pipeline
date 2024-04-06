@@ -108,8 +108,8 @@ def streamlit_app():
             options=latest_race['racename_text'],
             placeholder="Choose a race",
             label_visibility="collapsed")
-    
 
+        
         if option:
             round = latest_race[latest_race['racename_text'] == option]['round'].values[0]
 
@@ -117,12 +117,47 @@ def streamlit_app():
             st.write(f"	📅 {latest_race[latest_race['racename_text'] == option]['race_date'].values[0]}")
             st.write(f" 📍 {latest_race[latest_race['racename_text'] == option]['circuit_name'].values[0]}")
 
-            col1, col2 = st.columns(2)
-
-            with col1:
+            col1,col2 = st.columns(2)
+            with  col1:
                 st.subheader("🏁 Race Result")
-                latest_race_result = latest_race_result[latest_race_result['round'] == round][['position','positiontext','relative_time','full_name','constructor_name','grid','points']].sort_values(by='position')
-                st.dataframe(latest_race_result,column_config={
+                latest_race = latest_race_result[latest_race_result['round'] == round][['position','positiontext','relative_time','full_name','constructor_name','grid','points']].sort_values(by='position')
+                latest_race_result=latest_race_result[latest_race_result['round'] == round]
+                
+                fig = px.bar(latest_race_result,x='position',
+                               y='absolute_second',
+                               title='Time in Absolute Second',
+                               labels={
+                                "position":"Position",
+                                "absolute_second":"Absolute Second"
+                    },
+                    hover_data=['full_name','constructor_name'],
+                    color='constructor_name',
+                    color_discrete_map=color_map)
+                fig.update_xaxes(range=[0,11])
+                st.plotly_chart(fig)
+
+                st.subheader("🏁 Fastest Lap")
+                latest_fastest_lap = latest_fastest_lap[latest_fastest_lap['round'] == round][['full_name','constructor_name','fastest_lap_rank','lap','time','average_speed']].sort_values(by='average_speed',ascending=False)
+                
+                fig = px.bar(latest_fastest_lap,x='fastest_lap_rank',
+                               y='average_speed',
+                               title='Fastest Lap Average Speed',
+                               labels={
+                                "fastest_lap_rank":"Fastest Lap Rank",
+                                "average_speed":"Average Speed of the Fastest Lap"
+                    },
+                    hover_data=['full_name','constructor_name'],
+                    color='constructor_name',
+                    color_discrete_map=color_map)
+                st.plotly_chart(fig)
+
+                
+
+                
+            
+            with col2:
+                st.subheader("Race Result Details")
+                st.dataframe(latest_race,column_config={
                     "position":"Position",
                     "positiontext":"Position Text",
                     "relative_time":"Time",
@@ -131,10 +166,8 @@ def streamlit_app():
                     "grid":"Starting Grid",
                     "points":"Points"
                 }, hide_index=True)
-            
-            with col2:
-                st.subheader("🏁 Fastest Lap")
-                latest_fastest_lap = latest_fastest_lap[latest_fastest_lap['round'] == round][['full_name','constructor_name','fastest_lap_rank','lap','time','average_speed']].sort_values(by='average_speed',ascending=False)
+                
+                st.subheader("Fastest Lap Details")
                 st.dataframe(latest_fastest_lap,column_config={
                     "full_name":"Driver",
                     "constructor_name":"Constructor",
@@ -144,6 +177,37 @@ def streamlit_app():
                     "average_speed":"Average Speed"
                 }, hide_index=True)
 
+                
+
+
+
+            # col1, col2 = st.columns(2)
+            # with col1:
+            #     st.subheader("🏁 Race Result")
+            #     latest_race_result = latest_race_result[latest_race_result['round'] == round][['position','positiontext','relative_time','full_name','constructor_name','grid','points']].sort_values(by='position')
+            #     st.dataframe(latest_race_result,column_config={
+            #         "position":"Position",
+            #         "positiontext":"Position Text",
+            #         "relative_time":"Time",
+            #         "full_name":"Driver",
+            #         "constructor_name":"Constructor",
+            #         "grid":"Starting Grid",
+            #         "points":"Points"
+            #     }, hide_index=True)
+            
+            # with col2:
+            #     st.subheader("🏁 Fastest Lap")
+            #     latest_fastest_lap = latest_fastest_lap[latest_fastest_lap['round'] == round][['full_name','constructor_name','fastest_lap_rank','lap','time','average_speed']].sort_values(by='average_speed',ascending=False)
+            #     st.dataframe(latest_fastest_lap,column_config={
+            #         "full_name":"Driver",
+            #         "constructor_name":"Constructor",
+            #         "fastest_lap_rank":"Fastest Lap Rank",
+            #         "lap":"Lap",
+            #         "time":"Time",
+            #         "average_speed":"Average Speed"
+            #     }, hide_index=True)
+
+#------------ All Races this Season Tab ------------
     with tab3:
         col1,col2 = st.columns(2)
 
