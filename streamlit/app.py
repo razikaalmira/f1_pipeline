@@ -162,12 +162,16 @@ def streamlit_app():
 
         with col2:
             meetings_loc = meetings[['latitude','longitude','racename']]
-            fig = px.scatter_mapbox(meetings_loc,
-                                lat='latitude',
-                                lon='longitude')
+            # fig = px.scatter_mapbox(meetings_loc,
+            #                     lat='latitude',
+            #                     lon='longitude',
+            #                     text='racename')
+            # st.plotly_chart(fig)
+            st.map(meetings_loc,latitude='latitude',longitude='longitude')
+            
                                 # hover_name='racename')
                                 # projection='natural earth')
-            st.plotly_chart(fig)
+            # fig = px.choropleth_mapbox(meetings_loc,
 
 if __name__ == "__main__":
     streamlit_app()
