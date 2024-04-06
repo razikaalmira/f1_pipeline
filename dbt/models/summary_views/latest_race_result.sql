@@ -12,7 +12,8 @@ rnk as (
 		positiontext,
 		grid,
 		points,
-		coalesce(relative_time,status) relative_time
+		coalesce(relative_time,status) relative_time,
+		absolute_millisecond
 	from {{ ref('race_result') }}  a
 	where season = extract(year from current_date)
 	-- and round = (select max(round) from {{ ref('race_result') }} where season = extract(year from current_date))
@@ -28,7 +29,8 @@ select
 	positiontext,
 	grid,
 	points,
-	relative_time
+	relative_time,
+	absolute_millisecond
 from rnk a
 left join {{ ref('dim_driver') }}  b
 	on a.driver_id = b.driver_id
