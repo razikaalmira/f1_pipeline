@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import psycopg2
-import sqlalchemy
 
 # Initialize connection
 @st.cache_resource

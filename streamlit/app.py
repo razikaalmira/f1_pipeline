@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-# import psycopg2
-# import sqlalchemy
 import blocks.components as bc
 import plotly.express as px
 import geopandas as gpd
