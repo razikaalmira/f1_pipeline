@@ -52,79 +52,79 @@ class DataRetriever:
         except Exception as e:
             return f"Error: {e}"
     
-class Ergast(DataRetriever):
+# class Ergast(DataRetriever):
 
-    def __init__(self,start_year,end_year,start_date,end_date):
-        super().__init__(start_year,end_year,start_date,end_date)
-        self.base_url = "http://ergast.com/api/f1"
-        self.max_round_todate = None
+#     def __init__(self,start_year,end_year,start_date,end_date):
+#         super().__init__(start_year,end_year,start_date,end_date)
+#         self.base_url = "http://ergast.com/api/f1"
+#         self.max_round_todate = None
 
-    def get_season_list(self):
-        season_list = []
-        for year in range(self.start_year, self.end_year + 1):
-            url = f"{self.base_url}/{year}.json"
-            fetched = self._fetch_data(url)
-            df = pd.DataFrame(fetched['MRData']['RaceTable']['Races'])
-            season_list.append(df)
+#     def get_season_list(self):
+#         season_list = []
+#         for year in range(self.start_year, self.end_year + 1):
+#             url = f"{self.base_url}/{year}.json"
+#             fetched = self._fetch_data(url)
+#             df = pd.DataFrame(fetched['MRData']['RaceTable']['Races'])
+#             season_list.append(df)
             
-        if season_list:
-            season_list_df = pd.concat(season_list, ignore_index=True)
-            season_list_df['date'] = pd.to_datetime(season_list_df['date']).dt.date
-            season_list_df['season'] = season_list_df['season'].astype('int')
-            season_list_df['round'] = season_list_df['round'].astype('int')
+#         if season_list:
+#             season_list_df = pd.concat(season_list, ignore_index=True)
+#             season_list_df['date'] = pd.to_datetime(season_list_df['date']).dt.date
+#             season_list_df['season'] = season_list_df['season'].astype('int')
+#             season_list_df['round'] = season_list_df['round'].astype('int')
             
-            if self.max_round_todate is None:
-                filtered_date = season_list_df[(season_list_df['season'] == self.current_year) & (season_list_df['date'] < self.today)]
+#             if self.max_round_todate is None:
+#                 filtered_date = season_list_df[(season_list_df['season'] == self.current_year) & (season_list_df['date'] < self.today)]
                 
-                if not filtered_date.empty:
-                    max_round = filtered_date.loc[filtered_date['date'].idxmax(), 'round']
-                    self.max_round_todate = max_round.astype('int')
-                else:
-                    print("Filtered data is empty. No max round found.")
+#                 if not filtered_date.empty:
+#                     max_round = filtered_date.loc[filtered_date['date'].idxmax(), 'round']
+#                     self.max_round_todate = max_round.astype('int')
+#                 else:
+#                     print("Filtered data is empty. No max round found.")
     
             
-            # upload to S3 bucket
-            result = self._upload_to_s3(season_list_df,'season_list.csv')
+#             # upload to S3 bucket
+#             result = self._upload_to_s3(season_list_df,'season_list.csv')
     
-            return result
-        else:
-            return "No season_list data fetched for any year."
+#             return result
+#         else:
+#             return "No season_list data fetched for any year."
         
-    def get_race_result(self):
-        race_result = []
-        for year in range(self.start_year,self.current_year+1):
-            if year < self.current_year:
-                for race_no in range(1,25):
-                    url = f"{self.base_url}/{year}/{race_no}/results.json"
-                    fetched = self._fetch_data(url)
-                    if 'MRData' in fetched and 'RaceTable' in fetched['MRData'] and 'Races' in fetched['MRData']['RaceTable']:
-                        race_data = fetched['MRData']['RaceTable']['Races']
-                        if race_data:
-                            df = pd.DataFrame(race_data[0]['Results'])
-                            df['season'] = year
-                            df['round'] = race_no
-                            race_result.append(df)
+#     def get_race_result(self):
+#         race_result = []
+#         for year in range(self.start_year,self.current_year+1):
+#             if year < self.current_year:
+#                 for race_no in range(1,25):
+#                     url = f"{self.base_url}/{year}/{race_no}/results.json"
+#                     fetched = self._fetch_data(url)
+#                     if 'MRData' in fetched and 'RaceTable' in fetched['MRData'] and 'Races' in fetched['MRData']['RaceTable']:
+#                         race_data = fetched['MRData']['RaceTable']['Races']
+#                         if race_data:
+#                             df = pd.DataFrame(race_data[0]['Results'])
+#                             df['season'] = year
+#                             df['round'] = race_no
+#                             race_result.append(df)
 
-            else:     
-                for race_no in range(1,self.max_round_todate+1):
-                    url = f"{self.base_url}/{year}/{race_no}/results.json"
-                    fetched = self._fetch_data(url)
-                    if 'MRData' in fetched and 'RaceTable' in fetched['MRData'] and 'Races' in fetched['MRData']['RaceTable']:
-                        race_data = fetched['MRData']['RaceTable']['Races']
-                        if race_data:
-                            df = pd.DataFrame(race_data[0]['Results'])
-                            df['season'] = year
-                            df['round'] = race_no
-                            race_result.append(df)
+#             else:     
+#                 for race_no in range(1,self.max_round_todate+1):
+#                     url = f"{self.base_url}/{year}/{race_no}/results.json"
+#                     fetched = self._fetch_data(url)
+#                     if 'MRData' in fetched and 'RaceTable' in fetched['MRData'] and 'Races' in fetched['MRData']['RaceTable']:
+#                         race_data = fetched['MRData']['RaceTable']['Races']
+#                         if race_data:
+#                             df = pd.DataFrame(race_data[0]['Results'])
+#                             df['season'] = year
+#                             df['round'] = race_no
+#                             race_result.append(df)
                             
-        if race_result:
-            race_result_df = pd.concat(race_result,ignore_index=True)
+#         if race_result:
+#             race_result_df = pd.concat(race_result,ignore_index=True)
     
-            # upload to S3 bucket
-            result = self._upload_to_s3(race_result_df,'race_result.csv')
-            return result
-        else:
-            return "No race_result data fetched for any year."
+#             # upload to S3 bucket
+#             result = self._upload_to_s3(race_result_df,'race_result.csv')
+#             return result
+#         else:
+#             return "No race_result data fetched for any year."
 
 
 class OpenF1(DataRetriever):
@@ -202,18 +202,56 @@ class OpenF1(DataRetriever):
         except Exception as f:
             return f"Error: {f}"
 
+    def get_drivers_data(self):
+        drivers_data = pd.DataFrame()
+        try:
+            for session in self.session_key:
+                url = f"{self.base_url}/drivers?session_key={session}"
+                fetched = self._fetch_data(url)
+                drivers_data = drivers_data.append(fetched,ignore_index=True)
+                
+            if drivers_data:
+                result = self._upload_to_s3(drivers_data,'drivers_data.csv')
+                return result
+            else:
+                return "No drivers_data fetched for any year"
+        except TypeError as e:
+            return f"Error: {e}, session info is empty, couldn't get laps data."
+        except Exception as f:
+            return f"Error: {f}"
+        
+    def get_position_data(self):
+        position_data = pd.DataFrame()
+        try:  
+            for session in self.session_key:
+                url = f"{self.base_url}/position?session_key={session}"
+                fetched = self._fetch_data(url)
+                position_data_initial = position_data.append(fetched,ignore_index=True)
+                latest = position_data_initial.groupby(['meeting_key','position'])['date'].idxmax()
+                position_data = position_data_initial.loc[latest]
 
+            if position_data:
+                result = self._upload_to_s3(position_data,'position_data.csv')
+                return result
+            else:
+                return "No position_data fetched for any year"
+        except TypeError as e:
+            return f"Error: {e}, session info is empty, couldn't get laps data."
+        except Exception as f:
+            return f"Error: {f}"
+
+        
+           
 if __name__ == "__main__":
     start_year = date.today().year - 3
     end_year = date.today().year
     start_date = datetime(start_year,1,1).strftime("%Y-%m-%d")
     end_date = date.today()
-    
-    ergast = Ergast(start_year,end_year,start_date,end_date)
+
     openf1 = OpenF1(start_year,end_year,start_date,end_date)
-    ergast.get_season_list()
-    ergast.get_race_result()
     openf1.get_meeting_info()
     openf1.get_session_info()
     openf1.get_weather_info()
     openf1.get_laps_data()
+    openf1.get_drivers_data()
+    openf1.get_position_data()
