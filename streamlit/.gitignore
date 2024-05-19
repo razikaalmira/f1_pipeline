@@ -1,5 +1,4 @@
 
 .streamlit/
 *.toml
-*.csv
 *.ini
