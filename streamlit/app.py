@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-# import blocks.components as bc
 import plotly.express as px
 # import geopandas as gpd
 
@@ -20,15 +19,15 @@ def streamlit_app():
     # meetings = bc.get_meetings(_conn)
 
     # retrieve dataframes from local
-    driver_standings = pd.read_csv('blocks/driver_standings.csv') 
-    constructor_standings = pd.read_csv('blocks/constructor_standings.csv') 
-    driver_cumulative_pts = pd.read_csv('blocks/driver_cumulative_pts.csv') 
-    constructor_cumulative_pts = pd.read_csv('blocks/constructor_cumulative_pts.csv') 
-    latest_race = pd.read_csv('blocks/latest_race.csv') 
-    latest_race_result = pd.read_csv('blocks/latest_race_result.csv') 
-    latest_fastest_lap = pd.read_csv('blocks/latest_fastest_lap.csv') 
-    meetings = pd.read_csv('blocks/meetings_this_season.csv') 
-    team_colour = pd.read_csv('blocks/team_colour.csv')
+    driver_standings = pd.read_csv('./blocks/driver_standings.csv') 
+    constructor_standings = pd.read_csv('./blocks/constructor_standings.csv') 
+    driver_cumulative_pts = pd.read_csv('./blocks/driver_cumulative_pts.csv') 
+    constructor_cumulative_pts = pd.read_csv('./blocks/constructor_cumulative_pts.csv') 
+    latest_race = pd.read_csv('./blocks/latest_race.csv') 
+    latest_race_result = pd.read_csv('./blocks/latest_race_result.csv') 
+    latest_fastest_lap = pd.read_csv('./blocks/latest_fastest_lap.csv') 
+    meetings = pd.read_csv('./blocks/meetings_this_season.csv') 
+    team_colour = pd.read_csv('./blocks/team_colour.csv')
 
     with st.container():
         st.markdown(
