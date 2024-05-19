@@ -1,23 +1,34 @@
 import streamlit as st
 import pandas as pd
-import blocks.components as bc
+# import blocks.components as bc
 import plotly.express as px
-import geopandas as gpd
+# import geopandas as gpd
 
 st.set_page_config(layout="wide",page_title="streamlit: Formula 1 Results",page_icon="🏎️")
 # Initialize connection.
-_conn = bc.init_connection()
+# _conn = bc.init_connection()
 
 def streamlit_app():
-    # retrieve dataframes
-    driver_standings = bc.get_driver_standings(_conn)
-    constructor_standings = bc.get_constructor_standings(_conn)
-    driver_cumulative_pts = bc.get_driver_cumulative_pts(_conn)
-    constructor_cumulative_pts = bc.get_constructor_cumulative_pts(_conn)
-    latest_race = bc.get_latest_race(_conn)
-    latest_race_result = bc.get_latest_race_result(_conn)
-    latest_fastest_lap = bc.get_latest_fastest_lap(_conn)
-    meetings = bc.get_meetings(_conn)
+    # retrieve dataframes from RDS
+    # driver_standings = bc.get_driver_standings(_conn)
+    # constructor_standings = bc.get_constructor_standings(_conn)
+    # driver_cumulative_pts = bc.get_driver_cumulative_pts(_conn)
+    # constructor_cumulative_pts = bc.get_constructor_cumulative_pts(_conn)
+    # latest_race = bc.get_latest_race(_conn)
+    # latest_race_result = bc.get_latest_race_result(_conn)
+    # latest_fastest_lap = bc.get_latest_fastest_lap(_conn)
+    # meetings = bc.get_meetings(_conn)
+
+    # retrieve dataframes from local
+    driver_standings = pd.read_csv('blocks/driver_standings.csv') 
+    constructor_standings = pd.read_csv('blocks/constructor_standings.csv') 
+    driver_cumulative_pts = pd.read_csv('blocks/driver_cumulative_pts.csv') 
+    constructor_cumulative_pts = pd.read_csv('blocks/constructor_cumulative_pts.csv') 
+    latest_race = pd.read_csv('blocks/latest_race.csv') 
+    latest_race_result = pd.read_csv('blocks/latest_race_result.csv') 
+    latest_fastest_lap = pd.read_csv('blocks/latest_fastest_lap.csv') 
+    meetings = pd.read_csv('blocks/meetings_this_season.csv') 
+    team_colour = pd.read_csv('blocks/team_colour.csv')
 
     with st.container():
         st.markdown(
@@ -27,26 +38,13 @@ def streamlit_app():
         st.title("Formula 1")
         st.subheader(f"Season {latest_race['season'][0]}")
 
-    tab1,tab2,tab3 = st.tabs([
+    tab1,tab2 = st.tabs([
         "Overview",
-        "Race Result",
-        "This Season"
+        "Race Result"
+        # "This Season"
     ])
-
-    color_map = {
-        "McLaren":"#FF8000",
-        "Sauber":"#DE3126",
-        "Haas F1 Team":"#E6002B",
-        "Ferrari":"#ff2800",
-        "Mercedes":"#00A19B",
-        "AlphaTauri":"#20394C",
-        "Red Bull":"#223971",
-        "Aston Martin":"#002420",
-        "RB F1 Team":"#1434CB",
-        "Alpine F1 Team":"#055CAA",
-        "Alfa Romeo":"#A42138",
-        "Williams":"#2596BE"
-    }
+    
+    color_map = pd.Series(team_colour.colour.values,index=team_colour.team_name).to_dict()
 # -------------- Overview Tab -------------
     with tab1:
         st.header("Overview")
@@ -55,17 +53,18 @@ def streamlit_app():
         
         with col1:
             st.subheader("🏎️ Driver Standings")
-            driver_std = driver_standings[['rank','total_points','full_name','constructor_name','nationality']]
+            driver_std = driver_standings[['rank','total_points','full_name','headshot_url','team_name','country_code']].sort_values(by='rank',ascending=True)
+
             st.dataframe(driver_std,column_config={
                 "rank":"Rank",
                 "total_points":"Total Points",
                 "full_name":"Driver",
-                "constructor_name":"Constructor",
-                "nationality":"Nationality"
+                "team_name":"Constructor",
+                "country_code":"Country",
+                "headshot_url":st.column_config.ImageColumn("photo", width="medium"),
             }, hide_index=True)
-
             st.subheader("	🛠️ Constructor Standings")
-            constructor_std = constructor_standings[['rank','total_points','constructor_name']]
+            constructor_std = constructor_standings[['rank','total_points','team_name']].sort_values(by='total_points',ascending=False)
             st.dataframe(constructor_std,column_config={
                 "rank":"Rank",
                 "total_points":"Total Points",
@@ -75,12 +74,12 @@ def streamlit_app():
         with col2:
             fig = px.line(driver_cumulative_pts, x="round", y="cumulative_points",
                     line_group="full_name",
-                    color="constructor_name",
+                    color="team_name",
                     color_discrete_map=color_map, 
                     labels={
                         "round":"Round",
                         "cumulative_points":"Cumulative Points",
-                        "constructor_name":"Constructor",
+                        "team_name":"Constructor",
                         "full_name":"Driver"
                     },
                     title="Driver Points Throughout the Season",
@@ -89,12 +88,12 @@ def streamlit_app():
             st.plotly_chart(fig)
 
             fig = px.line(constructor_cumulative_pts, x="round", y="cumulative_points",
-                    color="constructor_name",
+                    color="team_name",
                     color_discrete_map=color_map, 
                     labels={
                         "round":"Round",
                         "cumulative_points":"Cumulative Points",
-                        "constructor_name":"Constructor"
+                        "team_name":"Constructor"
                     },
                     title="Constructor Points Throughout the Season",
                     markers=True)
@@ -105,135 +104,43 @@ def streamlit_app():
     with tab2:
         option = st.selectbox(
             label="Use the dropdown to choose a race.",
-            options=latest_race['racename_text'],
+            options=latest_race['meeting_name'],
             placeholder="Choose a race",
             label_visibility="collapsed")
 
         
         if option:
-            round = latest_race[latest_race['racename_text'] == option]['round'].values[0]
+            round = latest_race[latest_race['meeting_name'] == option]['round'].values[0]
 
-            st.subheader(f"{latest_race[latest_race['racename_text'] == option]['racename'].values[0]}")
-            st.write(f"	📅 {latest_race[latest_race['racename_text'] == option]['race_date'].values[0]}")
-            st.write(f" 📍 {latest_race[latest_race['racename_text'] == option]['circuit_name'].values[0]}")
+            st.subheader(f"{latest_race[latest_race['meeting_name'] == option]['meeting_official_name'].values[0]}")
+            st.write(f"	📅 {latest_race[latest_race['meeting_name'] == option]['race_date'].values[0]}")
+            st.write(f" 📍 {latest_race[latest_race['meeting_name'] == option]['circuit_short_name'].values[0]}")
 
             col1,col2 = st.columns(2)
             with  col1:
                 st.subheader("🏁 Race Result")
-                latest_race = latest_race_result[latest_race_result['round'] == round][['position','positiontext','relative_time','full_name','constructor_name','grid','points']].sort_values(by='position')
-                latest_race_result=latest_race_result[latest_race_result['round'] == round]
+                latest_race = latest_race_result[latest_race_result['round'] == round][['position','full_name','team_name','points']].sort_values(by='position')
                 
-                fig = px.bar(latest_race_result,x='position',
-                               y='absolute_second',
-                               title='Time in Absolute Second',
-                               labels={
-                                "position":"Position",
-                                "absolute_second":"Absolute Second"
-                    },
-                    hover_data=['full_name','constructor_name'],
-                    color='constructor_name',
-                    color_discrete_map=color_map)
-                fig.update_xaxes(range=[0,11])
-                st.plotly_chart(fig)
-
-                st.subheader("🏁 Fastest Lap")
-                latest_fastest_lap = latest_fastest_lap[latest_fastest_lap['round'] == round][['full_name','constructor_name','fastest_lap_rank','lap','time','average_speed']].sort_values(by='average_speed',ascending=False)
-                
-                fig = px.bar(latest_fastest_lap,x='fastest_lap_rank',
-                               y='average_speed',
-                               title='Fastest Lap Average Speed',
-                               labels={
-                                "fastest_lap_rank":"Fastest Lap Rank",
-                                "average_speed":"Average Speed of the Fastest Lap"
-                    },
-                    hover_data=['full_name','constructor_name'],
-                    color='constructor_name',
-                    color_discrete_map=color_map)
-                st.plotly_chart(fig)
-
-                
-
-                
+                st.dataframe(latest_race,column_config={
+                "position":"Rank",
+                "full_name":"Full Name",
+                "team_name":"Constructor",
+                "points":"Points"
+                }, hide_index=True)
+            
             
             with col2:
-                st.subheader("Race Result Details")
-                st.dataframe(latest_race,column_config={
-                    "position":"Position",
-                    "positiontext":"Position Text",
-                    "relative_time":"Time",
-                    "full_name":"Driver",
-                    "constructor_name":"Constructor",
-                    "grid":"Starting Grid",
-                    "points":"Points"
-                }, hide_index=True)
+                st.subheader("🏁 Fastest Lap")
+                latest_fastest_lap = latest_fastest_lap[latest_fastest_lap['round'] == round][['full_name','team_name','fastest_lap_rank','lap_number','duration']].sort_values(by='duration',ascending=True)
                 
-                st.subheader("Fastest Lap Details")
                 st.dataframe(latest_fastest_lap,column_config={
-                    "full_name":"Driver",
-                    "constructor_name":"Constructor",
+                    "full_name":"Full Name",
+                    "team_name":"Team Name",
                     "fastest_lap_rank":"Fastest Lap Rank",
-                    "lap":"Lap",
-                    "time":"Time",
-                    "average_speed":"Average Speed"
+                    "lap_number":"Lap Number",
+                    "duration":"Duration (seconds)"
                 }, hide_index=True)
 
-                
-
-
-
-            # col1, col2 = st.columns(2)
-            # with col1:
-            #     st.subheader("🏁 Race Result")
-            #     latest_race_result = latest_race_result[latest_race_result['round'] == round][['position','positiontext','relative_time','full_name','constructor_name','grid','points']].sort_values(by='position')
-            #     st.dataframe(latest_race_result,column_config={
-            #         "position":"Position",
-            #         "positiontext":"Position Text",
-            #         "relative_time":"Time",
-            #         "full_name":"Driver",
-            #         "constructor_name":"Constructor",
-            #         "grid":"Starting Grid",
-            #         "points":"Points"
-            #     }, hide_index=True)
-            
-            # with col2:
-            #     st.subheader("🏁 Fastest Lap")
-            #     latest_fastest_lap = latest_fastest_lap[latest_fastest_lap['round'] == round][['full_name','constructor_name','fastest_lap_rank','lap','time','average_speed']].sort_values(by='average_speed',ascending=False)
-            #     st.dataframe(latest_fastest_lap,column_config={
-            #         "full_name":"Driver",
-            #         "constructor_name":"Constructor",
-            #         "fastest_lap_rank":"Fastest Lap Rank",
-            #         "lap":"Lap",
-            #         "time":"Time",
-            #         "average_speed":"Average Speed"
-            #     }, hide_index=True)
-
-#------------ All Races this Season Tab ------------
-    with tab3:
-        col1,col2 = st.columns(2)
-
-        with col1:
-            st.subheader(f"All meetings this {meetings['season'][0]} season")
-            meetings_table = meetings[['round','race_date','racename','circuit_name','country']].sort_values(by='round')
-            st.dataframe(meetings_table,column_config={
-                "round":"Round",
-                "race_date":"Race Date",
-                "racename":"Race Name",
-                "circuit_name":"Circuit",
-                "country":"Country"
-            }, hide_index=True)
-
-        with col2:
-            meetings_loc = meetings[['latitude','longitude','racename']]
-            # fig = px.scatter_mapbox(meetings_loc,
-            #                     lat='latitude',
-            #                     lon='longitude',
-            #                     text='racename')
-            # st.plotly_chart(fig)
-            st.map(meetings_loc,latitude='latitude',longitude='longitude')
-            
-                                # hover_name='racename')
-                                # projection='natural earth')
-            # fig = px.choropleth_mapbox(meetings_loc,
 
 if __name__ == "__main__":
     streamlit_app()
