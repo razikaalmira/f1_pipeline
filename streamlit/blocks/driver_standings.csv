@@ -1,22 +1,22 @@
 ,season,full_name,driver_number,team_name,country_code,headshot_url,total_points,rank
-0,2024,Alexander ALBON,23,Williams,THA,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/A/ALEALB01_Alexander_Albon/alealb01.png.transform/1col/image.png,0,13
-1,2024,Carlos SAINZ,55,Ferrari,ESP,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png,77,5
-2,2024,Charles LECLERC,16,Ferrari,MON,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png,84,3
-3,2024,Daniel RICCIARDO,3,RB,AUS,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/D/DANRIC01_Daniel_Ricciardo/danric01.png.transform/1col/image.png,0,13
-4,2024,Esteban OCON,31,Alpine,FRA,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png,1,12
-5,2024,Fernando ALONSO,14,Aston Martin,ESP,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png,36,6
-6,2024,George RUSSELL,63,Mercedes,GBR,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png,36,6
-7,2024,Kevin MAGNUSSEN,20,Haas F1 Team,DEN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/K/KEVMAG01_Kevin_Magnussen/kevmag01.png.transform/1col/image.png,1,12
-8,2024,Lance STROLL,18,Aston Martin,CAN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png,7,9
-9,2024,Lando NORRIS,4,McLaren,GBR,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png,80,4
-10,2024,Lewis HAMILTON,44,Mercedes,GBR,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png,20,7
-11,2024,Logan SARGEANT,2,Williams,USA,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LOGSAR01_Logan_Sargeant/logsar01.png.transform/1col/image.png,0,13
-12,2024,Max VERSTAPPEN,1,Red Bull Racing,NED,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png,118,1
-13,2024,Nico HULKENBERG,27,Haas F1 Team,GER,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/N/NICHUL01_Nico_Hulkenberg/nichul01.png.transform/1col/image.png,4,11
-14,2024,Oliver BEARMAN,38,Ferrari,GBR,,6,10
-15,2024,Oscar PIASTRI,81,McLaren,AUS,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png,36,6
-16,2024,Pierre GASLY,10,Alpine,FRA,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png,0,13
-17,2024,Sergio PEREZ,11,Red Bull Racing,MEX,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/S/SERPER01_Sergio_Perez/serper01.png.transform/1col/image.png,89,2
-18,2024,Valtteri BOTTAS,77,Kick Sauber,FIN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/V/VALBOT01_Valtteri_Bottas/valbot01.png.transform/1col/image.png,0,13
-19,2024,Yuki TSUNODA,22,RB,JPN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/Y/YUKTSU01_Yuki_Tsunoda/yuktsu01.png.transform/1col/image.png,11,8
-20,2024,ZHOU Guanyu,24,Kick Sauber,CHN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/G/GUAZHO01_Guanyu_Zhou/guazho01.png.transform/1col/image.png,0,13
+0,2024,Alexander ALBON,23,Williams,THA,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/A/ALEALB01_Alexander_Albon/alealb01.png.transform/1col/image.png,0,15
+1,2024,Carlos SAINZ,55,Ferrari,ESP,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png,87,5
+2,2024,Charles LECLERC,16,Ferrari,MON,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png,99,2
+3,2024,Daniel RICCIARDO,3,RB,AUS,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/D/DANRIC01_Daniel_Ricciardo/danric01.png.transform/1col/image.png,0,15
+4,2024,Esteban OCON,31,Alpine,FRA,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png,1,14
+5,2024,Fernando ALONSO,14,Aston Martin,ESP,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png,36,8
+6,2024,George RUSSELL,63,Mercedes,GBR,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png,42,7
+7,2024,Kevin MAGNUSSEN,20,Haas F1 Team,DEN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/K/KEVMAG01_Kevin_Magnussen/kevmag01.png.transform/1col/image.png,1,14
+8,2024,Lance STROLL,18,Aston Martin,CAN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png,9,11
+9,2024,Lando NORRIS,4,McLaren,GBR,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png,98,3
+10,2024,Lewis HAMILTON,44,Mercedes,GBR,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png,28,9
+11,2024,Logan SARGEANT,2,Williams,USA,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/L/LOGSAR01_Logan_Sargeant/logsar01.png.transform/1col/image.png,0,15
+12,2024,Max VERSTAPPEN,1,Red Bull Racing,NED,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png,143,1
+13,2024,Nico HULKENBERG,27,Haas F1 Team,GER,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/N/NICHUL01_Nico_Hulkenberg/nichul01.png.transform/1col/image.png,4,13
+14,2024,Oliver BEARMAN,38,Ferrari,GBR,,6,12
+15,2024,Oscar PIASTRI,81,McLaren,AUS,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png,48,6
+16,2024,Pierre GASLY,10,Alpine,FRA,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png,0,15
+17,2024,Sergio PEREZ,11,Red Bull Racing,MEX,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/S/SERPER01_Sergio_Perez/serper01.png.transform/1col/image.png,93,4
+18,2024,Valtteri BOTTAS,77,Kick Sauber,FIN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/V/VALBOT01_Valtteri_Bottas/valbot01.png.transform/1col/image.png,0,15
+19,2024,Yuki TSUNODA,22,RB,JPN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/Y/YUKTSU01_Yuki_Tsunoda/yuktsu01.png.transform/1col/image.png,12,10
+20,2024,ZHOU Guanyu,24,Kick Sauber,CHN,https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/G/GUAZHO01_Guanyu_Zhou/guazho01.png.transform/1col/image.png,0,15
