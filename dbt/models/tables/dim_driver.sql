@@ -1,17 +1,26 @@
 {{ config(materialized='table') }}
 
+with
+dis as (
 select distinct
-    driver_id,
+    broadcast_name,
+    country_code,
+    first_name,
+    full_name,
+    headshot_url,
+    last_name,
     driver_number,
-    driver_code,
-    driver_url,
-    given_name,
-    family_name,
-    birthdate,
-    nationality
+    team_colour,
+    team_name,
+    name_acronym,
+    row_number() over (partition by full_name, driver_number order by headshot_url) rn
 from {{ ref('snapshot_dim_driver') }}
 where dbt_valid_to is null
-
+and team_name is not null
+)
+select * 
+from dis 
+where rn = 1
 -- with
 -- to_json as (
 -- 	select driver::jsonb driver

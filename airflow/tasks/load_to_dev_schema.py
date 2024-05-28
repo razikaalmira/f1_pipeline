@@ -28,9 +28,9 @@ def get_objects_from_s3():
         globals()[file_name.split('.')[0]] = pd.read_csv(StringIO(data),on_bad_lines='skip')
 
 
-def replace_single_to_double_quotes(dataframe,cols_to_replace):
-    for column in cols_to_replace:
-        dataframe[column] = dataframe[column].apply(lambda x: str(x).replace("'",'"'))
+# def replace_single_to_double_quotes(dataframe,cols_to_replace):
+#     for column in cols_to_replace:
+#         dataframe[column] = dataframe[column].apply(lambda x: str(x).replace("'",'"'))
 
 
 # Lower all column names
@@ -110,40 +110,40 @@ meeting_info_temp = """
         );
         """
 
-race_result_temp = """
-    CREATE TABLE IF NOT EXISTS race_result_temp (
-        number            INTEGER,
-        position          INTEGER,
-        positionText     VARCHAR(100),
-        points          DECIMAL,
-        Driver           JSONB,
-        Constructor      JSONB,
-        grid              INTEGER,
-        laps              INTEGER,
-        status           VARCHAR(100),
-        Time             JSONB,
-        FastestLap       JSONB,
-        season            INTEGER,
-        round             INTEGER
-        );
-        """
+# race_result_temp = """
+#     CREATE TABLE IF NOT EXISTS race_result_temp (
+#         number            INTEGER,
+#         position          INTEGER,
+#         positionText     VARCHAR(100),
+#         points          DECIMAL,
+#         Driver           JSONB,
+#         Constructor      JSONB,
+#         grid              INTEGER,
+#         laps              INTEGER,
+#         status           VARCHAR(100),
+#         Time             JSONB,
+#         FastestLap       JSONB,
+#         season            INTEGER,
+#         round             INTEGER
+#         );
+#         """
 
-season_list_temp = """
-    CREATE TABLE IF NOT EXISTS season_list_temp (
-        season             INTEGER,
-        round              INTEGER,
-        url               VARCHAR(100),
-        raceName          VARCHAR(100),
-        Circuit           JSONB,
-        date              DATE,
-        time              VARCHAR(100),
-        FirstPractice     JSONB,
-        SecondPractice    JSONB,
-        ThirdPractice     JSONB,
-        Qualifying        JSONB,
-        Sprint            JSONB
-        );
-        """
+# season_list_temp = """
+#     CREATE TABLE IF NOT EXISTS season_list_temp (
+#         season             INTEGER,
+#         round              INTEGER,
+#         url               VARCHAR(100),
+#         raceName          VARCHAR(100),
+#         Circuit           JSONB,
+#         date              DATE,
+#         time              VARCHAR(100),
+#         FirstPractice     JSONB,
+#         SecondPractice    JSONB,
+#         ThirdPractice     JSONB,
+#         Qualifying        JSONB,
+#         Sprint            JSONB
+#         );
+#         """
 
 session_info_temp = """
     CREATE TABLE IF NOT EXISTS session_info_temp (
@@ -180,6 +180,32 @@ weather_info_temp = """
         );
         """
 
+drivers_data_temp = """
+    CREATE TABLE IF NOT EXISTS drivers_data_temp (
+        session_key         INTEGER,
+        meeting_key         INTEGER,
+        broadcast_name      VARCHAR(100),
+        country_code        VARCHAR(10),
+        first_name          VARCHAR(100),
+        full_name           VARCHAR(100)
+        headshot_url        VARCHAR(100)
+        last_name           VARCHAR(100)
+        driver_number       INTEGER,
+        team_colour         VARCHAR(10),
+        team_name           VARCHAR(20),
+        name_acronym        VARCHAR(10)          
+        );
+        """
+
+position_data_temp = """
+    CREATE TABLE IF NOT EXISTS position_data_temp (
+        session_key         INTEGER,
+        meeting_key         INTEGER,
+        driver_number       INTEGER,
+        date                VARCHAR(100),
+        position            VARCHAR(5)        
+        );
+        """
 
 def close_connections():
     cur.close()
@@ -189,22 +215,22 @@ def close_connections():
 if __name__ == "__main__":
     get_objects_from_s3()
 
-    replace_single_to_double_quotes(race_result,['Driver','Constructor','Time','FastestLap'])
-    replace_single_to_double_quotes(season_list,['Circuit', 'FirstPractice', 'SecondPractice', 'ThirdPractice', 'Qualifying', 'Sprint'])
-    race_result.loc[race_result['Time']=='nan','Time'] = {"millis": "", "time": ""}
-    lowercase_columns([race_result,laps_data,weather_info,season_list,session_info,meeting_info])
+    # replace_single_to_double_quotes(race_result,['Driver','Constructor','Time','FastestLap'])
+    # replace_single_to_double_quotes(season_list,['Circuit', 'FirstPractice', 'SecondPractice', 'ThirdPractice', 'Qualifying', 'Sprint'])
+    # race_result.loc[race_result['Time']=='nan','Time'] = {"millis": "", "time": ""}
+    # lowercase_columns([race_result,laps_data,weather_info,season_list,session_info,meeting_info])
     
     conn, cur, engine = init_connection()
 
-    pairs = [[race_result,'race_result_temp',race_result_temp],
+    pairs = [[position_data,'position_data_temp',position_data_temp],
             [laps_data,'laps_data_temp',laps_data_temp],
             [weather_info,'weather_info_temp',weather_info_temp],
-            [season_list,'season_list_temp',season_list_temp],
+            [drivers_data,'drivers_data_temp',drivers_data_temp],
             [session_info,'session_info_temp',session_info_temp],
             [meeting_info,'meeting_info_temp',meeting_info_temp]]
     
     for df,tablename,query in pairs:
         create_table(conn,cur,query)
         insert_to_table(conn,df,tablename)
-
+        
     close_connections()

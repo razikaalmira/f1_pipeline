@@ -3,7 +3,7 @@
 select 
 	a.meeting_key,
 	a.session_key,
-	b.driver_id,
+	a.driver_number,
 	a.i1_speed,
 	a.i2_speed,
 	a.st_speed,
@@ -18,5 +18,5 @@ select
 	a.segments_sector_3,
 	a.lap_number
 from {{ source('dev','laps_data_temp') }} a
-join {{ ref('snapshot_dim_driver') }} b
-    on a.driver_number = b.driver_number
+-- join {{ ref('snapshot_dim_driver') }} b
+--     on a.driver_number = b.driver_number

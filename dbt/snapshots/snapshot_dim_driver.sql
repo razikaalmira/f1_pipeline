@@ -2,24 +2,34 @@
 
 {{
     config(
-      target_database='postgres',
+      target_database='f1_db',
       target_schema='snapshots',
-      unique_key='driver_id',
+      unique_key='driver_number',
       strategy='check',
       check_cols=['driver_number']
     )
 }}
 
 select
-  driver_id,
+  -- driver_id,
+  -- cast(driver_number as int) driver_number,
+  -- driver_code,
+  -- driver_url,
+  -- given_name,
+  -- family_name,
+  -- birthdate,
+  -- nationality
+  broadcast_name,
+  country_code,
+  first_name,
+  full_name,
+  headshot_url,
+  last_name,
   cast(driver_number as int) driver_number,
-  driver_code,
-  driver_url,
-  given_name,
-  family_name,
-  birthdate,
-  nationality
-from {{ source('dev','dim_driver_temp') }}
+  team_colour,
+  team_name,
+  name_acronym
+from {{ source('dev','drivers_data_temp') }}
 
 -- with
 -- to_json as (

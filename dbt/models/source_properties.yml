@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: dev
-    database: postgres
+    database: f1_db
     schema: dev
     tables:
       - name: laps_data_temp
@@ -12,3 +12,6 @@ sources:
       - name: session_info_temp
       - name: weather_info_temp
       - name: dim_driver_temp
+      - name: drivers_data_temp
+      - name: position_data_temp
+      

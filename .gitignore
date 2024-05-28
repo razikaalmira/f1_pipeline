@@ -9,3 +9,5 @@ streamlit/.streamlit/secrets.toml
 */.ipynb_checkpoints/*.ipynb
 */__pycache__/
 */myenv/
+load.py
+csvs/
