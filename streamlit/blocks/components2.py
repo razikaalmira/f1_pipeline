@@ -15,7 +15,7 @@ def query_to_csv(conn,cur,query,file_name):
     tuples_list = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
     df = pd.DataFrame(tuples_list,columns=colnames)
-    df.to_csv(file_name)
+    df.to_csv('components2_results/'+file_name)
 
 def close_connections():
     cur.close()
