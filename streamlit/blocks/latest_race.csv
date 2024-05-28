@@ -1,8 +1,0 @@
-,meeting_name,meeting_official_name,location,country_key,country_code,country_name,circuit_key,circuit_short_name,race_date,race_time,gmt_offset,meeting_key,season,meeting_code,round
-0,Bahrain Grand Prix,FORMULA 1 GULF AIR BAHRAIN GRAND PRIX 2024,Sakhir,36,BRN,Bahrain,63,Sakhir,2024-02-29,11:30:00+00:00,03:00:00,1229,2024,BRN,1
-1,Saudi Arabian Grand Prix,FORMULA 1 STC SAUDI ARABIAN GRAND PRIX 2024,Jeddah,153,KSA,Saudi Arabia,149,Jeddah,2024-03-07,13:30:00+00:00,03:00:00,1230,2024,KSA,2
-2,Australian Grand Prix,FORMULA 1 ROLEX AUSTRALIAN GRAND PRIX 2024,Melbourne,5,AUS,Australia,10,Melbourne,2024-03-22,01:30:00+00:00,11:00:00,1231,2024,AUS,3
-3,Japanese Grand Prix,FORMULA 1 MSC CRUISES JAPANESE GRAND PRIX 2024,Suzuka,4,JPN,Japan,46,Suzuka,2024-04-05,02:30:00+00:00,09:00:00,1232,2024,JPN,4
-4,Chinese Grand Prix,FORMULA 1 LENOVO CHINESE GRAND PRIX 2024,Shanghai,53,CHN,China,49,Shanghai,2024-04-19,03:30:00+00:00,08:00:00,1233,2024,CHN,5
-5,Miami Grand Prix,FORMULA 1 CRYPTO.COM MIAMI GRAND PRIX 2024,Miami,19,USA,United States,151,Miami,2024-05-03,16:30:00+00:00,-04:00:00,1234,2024,USA,6
-6,Emilia Romagna Grand Prix,FORMULA 1 MSC CRUISES GRAN PREMIO DEL MADE IN ITALY E DELL'EMILIA-ROMAGNA 2024,Imola,13,ITA,Italy,6,Imola,2024-05-17,11:30:00+00:00,02:00:00,1235,2024,ITA,7

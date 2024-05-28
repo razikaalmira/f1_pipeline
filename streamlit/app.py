@@ -20,15 +20,15 @@ def streamlit_app():
     # meetings = bc.get_meetings(_conn)
 
     # retrieve dataframes from local
-    driver_standings = pd.read_csv(Path(__file__).parents[0]/'blocks/driver_standings.csv') 
-    constructor_standings = pd.read_csv(Path(__file__).parents[0]/'blocks/constructor_standings.csv') 
-    driver_cumulative_pts = pd.read_csv(Path(__file__).parents[0]/'blocks/driver_cumulative_pts.csv') 
-    constructor_cumulative_pts = pd.read_csv(Path(__file__).parents[0]/'blocks/constructor_cumulative_pts.csv') 
-    latest_race = pd.read_csv(Path(__file__).parents[0]/'blocks/latest_race.csv') 
-    latest_race_result = pd.read_csv(Path(__file__).parents[0]/'blocks/latest_race_result.csv') 
-    latest_fastest_lap = pd.read_csv(Path(__file__).parents[0]/'blocks/latest_fastest_lap.csv') 
-    meetings = pd.read_csv(Path(__file__).parents[0]/'blocks/meetings_this_season.csv') 
-    team_colour = pd.read_csv(Path(__file__).parents[0]/'blocks/team_colour.csv')
+    driver_standings = pd.read_csv(Path(__file__).parents[0]/'blocks/components2_results/driver_standings.csv') 
+    constructor_standings = pd.read_csv(Path(__file__).parents[0]/'blocks/components2_results/constructor_standings.csv') 
+    driver_cumulative_pts = pd.read_csv(Path(__file__).parents[0]/'blocks/components2_results/driver_cumulative_pts.csv') 
+    constructor_cumulative_pts = pd.read_csv(Path(__file__).parents[0]/'blocks/components2_results/constructor_cumulative_pts.csv') 
+    latest_race = pd.read_csv(Path(__file__).parents[0]/'blocks/components2_results/latest_race.csv') 
+    latest_race_result = pd.read_csv(Path(__file__).parents[0]/'blocks/components2_results/latest_race_result.csv') 
+    latest_fastest_lap = pd.read_csv(Path(__file__).parents[0]/'blocks/components2_results/latest_fastest_lap.csv') 
+    meetings = pd.read_csv(Path(__file__).parents[0]/'blocks/components2_results/meetings_this_season.csv') 
+    team_colour = pd.read_csv(Path(__file__).parents[0]/'blocks/components2_results/team_colour.csv')
 
     with st.container():
         st.markdown(
