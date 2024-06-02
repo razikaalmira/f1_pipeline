@@ -9,7 +9,6 @@ task_directory = current_directory + '/airflow/tasks'
 
 args = {
     "owner":"airflow",
-    "depends_on_past":False,
     "retries": 3,
     "retry_delay": timedelta(minutes=5),
     "start_date": datetime(2024,3,29),
